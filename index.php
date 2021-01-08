@@ -32,15 +32,29 @@ $products = [
 $totalValue = 0;
 
 
-if (isset($_POST['products'])) {
+if (isset($_POST['submit'])) {
     $price = 5;
-    $test = "test";
     $amount = 0;
+
     foreach ($_POST['products'] as $selected) {
         $totalValue = $totalValue + $price;
         $amount++;
+        // $name = $_POST['products'];
     }
-} else {
-    $test = "still nope";
+
+    //check if email is valid and submitted
+    if (!empty($_POST["email"]) && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+        $email = $_POST["email"];
+        $confirmationEmail =
+            "<div class='alert alert-success' role='alert'>
+            Thank you for your order! Your order will be emailed to: $email.</br>
+            </div>";
+    } elseif (empty($_POST["email"])) {
+        $confirmationEmail = "<div class='alert alert-danger' role='alert'>Email is required.</div></br>";
+    } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+        $confirmationEmail = "<div class='alert alert-danger' role='alert'>Email is not valid.</div></br>";
+    }
 }
+
+
 require 'form-view.php';

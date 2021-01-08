@@ -77,7 +77,10 @@
             <button type="submit" class="btn btn-primary" name="submit">Order!</button>
         </form>
 
-        <footer>You already ordered <?php echo $amount ?> items for the price of <?php echo $price ?> with a total of <strong>&euro; <?php echo $totalValue ?></strong> in food and drinks.</footer>
+        <footer>
+            You already ordered <?php echo $amount ?> items for the price of <?php echo $price ?> with a total of <strong>&euro; <?php echo $totalValue ?></strong> in food and drinks.</br>
+            <?php echo $confirmationEmail ?>
+        </footer>
     </div>
 
     <style>
