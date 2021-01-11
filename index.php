@@ -1,17 +1,16 @@
 <?php
-
-// declare(strict_types=1);
-
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
 // This file is your starting point (= since it's the index)
 // It will contain most of the logic, to prevent making a messy mix in the html
 
 // This line makes PHP behave in a more strict way
+// declare(strict_types=1);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 // We are going to use session variables so we need to enable sessions
 session_start();
+session_set_cookie_params(0);
 
 // Use this function when you need to need an overview of these variables
 function whatIsHappening()
@@ -26,84 +25,108 @@ function whatIsHappening()
     var_dump($_SESSION);
 }
 
+// if loop to get global variable for total value (if a cookie is set or not)
+if (isset($_COOKIE['valueOrders'])) {
+    $totalValue = $_COOKIE['valueOrders'];
+} else {
+    $totalValue = 0;
+}
+
+
+// if loop to get variables (if session is set or not)
+if ($_SESSION) {
+    $email = $_SESSION['email'];
+    $street = $_SESSION['street'];
+    $streetnumber = $_SESSION['streetnumber'];
+    $city = $_SESSION['city'];
+    $zipcode = $_SESSION['zipcode'];
+} else {
+    $email = "";
+    $street = "";
+    $streetnumber = "";
+    $city = "";
+    $zipcode = "";
+}
+
 // TODO: provide some products (you may overwrite the example)
 $products = [
-    ['name' => 'Cola', 'price' => 2.5],
-    ['name' => 'Water', 'price' => 2.5],
-    ['name' => 'Duvel', 'price' => 3.5],
+    ['name' => 'Margarita', 'price' => 8.5],
+    ['name' => 'Cosmopolitan', 'price' => 10.5],
+    ['name' => 'Martini dry', 'price' => 7.5],
+    ['name' => 'Gin & Tonic', 'price' => 13.5],
+    ['name' => 'Cuba Libre', 'price' => 9.5],
 ];
 
-$totalValue = 0;
-
-$email = $_POST["email"];
-$street = $_POST["street"];
-$streetnumber = $_POST["streetnumber"];
-$zipcode = $_POST["zipcode"];
-$city = $_POST["city"];
-
-
-
-
 if (isset($_POST['submit'])) {
-    $price = 5;
-    $amount = 0;
 
-    foreach ($_POST['products'] as $selected) {
-        $totalValue = $totalValue + $price;
-        $amount++;
-        // $name = $_POST['products'];
-    }
+    $email = $_SESSION['email'] = $_POST['email'];
+    $street = $_SESSION['street'] = $_POST['street'];
+    $streetnumber = $_SESSION['streetnumber'] = $_POST['streetnumber'];
+    $city = $_SESSION['city'] = $_POST['city'];
+    $zipcode = $_SESSION['zipcode'] = $_POST['zipcode'];
 
-    //check if email is valid and submitted
-    $emailIsValid = true;
+    $orderTotal = 0;
 
-
-
-    if ($email !== "" && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-        $email = $_POST["email"];
-        $emailIsValid = true;
-    } elseif (empty($_POST["email"])) {
-        $confirmationEmail = "<div class='alert alert-danger' role='alert'>Email is required.</div></br>";
-        $emailIsValid = false;
-    } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-        $confirmationEmail = "<div class='alert alert-danger' role='alert'>Email is not valid.</div></br>";
-        $emailIsValid = false;
-    }
-
-    if ($emailIsValid = true) {
-        $emailMessage = "email is valid";
+    if (!isset($_POST['products'])) {
+        $orderMessage = "<div class='alert alert-warning' role='alert'>Please order a product first.";
+        $totalMessage = "</div>";
     } else {
-        $emailMessage = "not";
-    }
-
-
-
-    $errorMessage = array();
-
-    if (empty($_POST['street'])) {
-        $errorMessage['street'] = "Please fill in a street.";
-    }
-    if (empty($_POST['streetnumber'])) {
-        $errorMessage['street'] = "Please fill in a streetnumber.";
-    }
-    if (empty($_POST['city'])) {
-        $errorMessage['city'] = "Please fill in a city.";
-    }
-    if (empty($_POST['zipcode'])) {
-        $errorMessage['zipcode'] = "Please fill in a zipcode.";
-    } else {
-        if (!is_numeric($zipcode)) {
-            $errorMessage['zipcode'] = "Please fill in a valid zipcode, containing only numbers.";
+        foreach ($_POST['products'] as $i => $product) {
+            $orderMessage = "<div class='alert alert-info' role='alert'>You ordered:";
+            $orderedProducts[$i] = $products[$i]['name'];
+            $orderTotal += ($products[$i]['price']);
+            $totalMessage = "for a total price of &euro;" . $orderTotal . " in drinks.</div>";
         }
     }
 
 
     if (empty($_POST["email"]) || empty($_POST['street']) || empty($_POST['streetnumber']) || empty($_POST['city']) || empty($_POST['zipcode'])) {
+
         $confirmationMessage = "<div class='alert alert-danger' role='alert'>Please check the error messages.</br></div>";
+
+        if ($email !== "" && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            $confirmationEmail = "<div class='alert alert-success' role='alert'>Email is valid.</div></br>";
+        } elseif (empty($_POST["email"])) {
+            $confirmationEmail = "<div class='alert alert-danger' role='alert'>Email is required.</div></br>";
+        } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            $confirmationEmail = "<div class='alert alert-danger' role='alert'>Email is not valid.</div></br>";
+        }
+
+        $errorMessage = array();
+
+        if (empty($_POST['street'])) {
+            $errorMessage['street'] = "Please fill in a street.";
+        }
+        if (empty($_POST['streetnumber'])) {
+            $errorMessage['street'] = "Please fill in a streetnumber.";
+        }
+        if (empty($_POST['city'])) {
+            $errorMessage['city'] = "Please fill in a city.";
+        }
+        if (empty($_POST['zipcode'])) {
+            $errorMessage['zipcode'] = "Please fill in a zipcode.";
+        } else {
+            if (!is_numeric($zipcode)) {
+                $errorMessage['zipcode'] = "Please fill in a valid zipcode, containing only numbers.";
+            }
+        }
     } else {
+        // Last step if everything is filled in correctly
+
+        //Total value: If cookie is not created create cookie for total order value of site
+        if (!isset($_COOKIE['valueOrders'])) {
+            $totalValue += $orderTotal;
+            setcookie('valueOrders', strval($totalValue), time() + (86400 * 365), "/");
+        } else {
+            $totalValue += $orderTotal;
+            setcookie('valueOrders', strval($totalValue), time() + (86400 * 365), "/");
+        }
+
+
         $confirmationMessage =
             "<div class='alert alert-success' role='alert'>
-        Thank you for your order! Your order details will be sent to your email address: $email.<br>
+        Thank you for your order! Your 
+        Your order details will be sent to your email address: $email.<br>
         This is your address:<br>
         $street $streetnumber<br>
         $zipcode $city.</br>
@@ -112,6 +135,13 @@ if (isset($_POST['submit'])) {
     }
 }
 
+
+function orderedItems($ordered)
+{
+    echo "<ul>";
+    echo "<li>" . $ordered . "</li>";
+    echo "</ul>";
+}
 
 
 require 'form-view.php';

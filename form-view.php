@@ -78,16 +78,22 @@
         </form>
 
         <footer>
-            You already ordered <?php echo $amount ?> items for the price of <?php echo $price ?> with a total of <strong>&euro; <?php echo $totalValue ?></strong> in food and drinks.</br>
-            <?php echo $confirmationEmail ?>
+            <?php
+            echo $orderMessage;
+            foreach ($orderedProducts as $ordered) orderedItems($ordered);
+            echo $totalMessage;
+            ?>
+
 
             <?php foreach ($errorMessage as $error) {
                 echo "<div class='alert alert-danger' role='alert'>$error</div></br>";
             } ?>
 
-            <?php echo $emailMessage ?>
+            <?php echo $confirmationEmail ?>
 
             <?php echo $confirmationMessage ?>
+
+            <div class="alert alert-primary" role="alert">You already ordered <strong>&euro; <?php echo $totalValue ?></strong> in Our Shop.</div>
 
 
         </footer>
