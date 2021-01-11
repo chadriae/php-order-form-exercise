@@ -80,6 +80,16 @@
         <footer>
             You already ordered <?php echo $amount ?> items for the price of <?php echo $price ?> with a total of <strong>&euro; <?php echo $totalValue ?></strong> in food and drinks.</br>
             <?php echo $confirmationEmail ?>
+
+            <?php foreach ($errorMessage as $error) {
+                echo "<div class='alert alert-danger' role='alert'>$error</div></br>";
+            } ?>
+
+            <?php echo $emailMessage ?>
+
+            <?php echo $confirmationMessage ?>
+
+
         </footer>
     </div>
 
