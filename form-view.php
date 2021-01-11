@@ -5,30 +5,49 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/jpg" href="images/cocktail.png" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-    <title>Your fancy store</title>
+    <title>DRINK COCKTAILS AT HOME</title>
+
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo&family=Libre+Baskerville&display=swap');
+
+    footer {
+        text-align: center;
+    }
+
+    body {
+        font-family: 'Cairo', sans-serif;
+        background-image: url('images/background.jpeg');
+        margin: 10px;
+        padding: 5px;
+        opacity: 0.9;
+        background-size: cover;
+    }
+</style>
 
 <body>
-    <div class="container">
-        <h1>Place your order</h1>
+    <div class="container bg-light">
+        <h1>COCKTAILS AT HOME</h1>
+        <p>We've been in lockdown for so long now, we might forget how it feels and tastes to drink a qualitative cocktail, made by your favorite bartender. Order online and get a cocktail package delivered at your home. You don't need anything, we will provide everything! All you have to do is follow the instructions and enjoy!</p>
         <?php // Navigation for when you need it 
         ?>
-        <?php /*
-    <nav>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link active" href="?food=1">Order food</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="?food=0">Order drinks</a>
-            </li>
-        </ul>
-    </nav>
-    */ ?>
+        <nav>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="?alcohol=1">Order alcoholic drinks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?alcohol=0">Order non-alcoholic Drinks</a>
+                </li>
+            </ul>
+        </nav>
+
         <form method="post" action="">
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -65,7 +84,7 @@
 
             <fieldset>
                 <legend>Products</legend>
-                <?php foreach ($products as $i => $product) : ?>
+                <?php foreach ($cocktailsAlcohol as $i => $product) : ?>
                     <label>
                         <?php // <?p= is equal to <?php echo 
                         ?>
@@ -75,8 +94,9 @@
             </fieldset>
 
             <button type="submit" class="btn btn-primary" name="submit">Order!</button>
+            <button type="submit" class="btn btn-danger" name="reset">Reset session</button>
         </form>
-
+        <br>
         <footer>
             <?php
             echo $orderMessage;
@@ -93,17 +113,12 @@
 
             <?php echo $confirmationMessage ?>
 
-            <div class="alert alert-primary" role="alert">You already ordered <strong>&euro; <?php echo $totalValue ?></strong> in Our Shop.</div>
+            <div class="alert alert-primary" role="alert">You already ordered <strong>&euro; <?= $totalValue ?></strong> in Our Shop.</div>
 
 
         </footer>
     </div>
 
-    <style>
-        footer {
-            text-align: center;
-        }
-    </style>
 </body>
 
 </html>

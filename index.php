@@ -18,13 +18,17 @@ function whatIsHappening()
     echo '<h2>$_GET</h2>';
     var_dump($_GET);
     echo '<h2>$_POST</h2>';
+    echo '<pre>';
     var_dump($_POST);
     echo '<h2>$_COOKIE</h2>';
+    echo '<pre>';
     var_dump($_COOKIE);
     echo '<h2>$_SESSION</h2>';
+    echo '<pre>';
     var_dump($_SESSION);
 }
 
+whatIsHappening();
 // if loop to get global variable for total value (if a cookie is set or not)
 if (isset($_COOKIE['valueOrders'])) {
     $totalValue = $_COOKIE['valueOrders'];
@@ -48,15 +52,28 @@ if ($_SESSION) {
     $zipcode = "";
 }
 
-// TODO: provide some products (you may overwrite the example)
-$products = [
-    ['name' => 'Margarita', 'price' => 8.5],
-    ['name' => 'Cosmopolitan', 'price' => 10.5],
-    ['name' => 'Martini dry', 'price' => 7.5],
-    ['name' => 'Gin & Tonic', 'price' => 13.5],
-    ['name' => 'Cuba Libre', 'price' => 9.5],
-];
+if (empty($_GET) || $_GET['alcohol'] == 1) {
+    $cocktailsAlcohol = [
+        ['name' => 'Margarita', 'price' => 8.5],
+        ['name' => 'Cosmopolitan', 'price' => 10.5],
+        ['name' => 'Martini dry', 'price' => 7.5],
+        ['name' => 'Gin & Tonic', 'price' => 13.5],
+        ['name' => 'Cuba Libre', 'price' => 9.5],
+    ];
+} else {
+    $cocktailsAlcohol = [
+        ['name' => 'Virgin Margarita', 'price' => 8.5],
+        ['name' => 'Virgin Cosmopolitan', 'price' => 10.5],
+        ['name' => 'Virgin Martini dry', 'price' => 7.5],
+        ['name' => 'Virgin Gin & Tonic', 'price' => 13.5],
+        ['name' => 'Virgin Cuba Libre', 'price' => 9.5],
+    ];
+}
 
+
+
+
+// Everything after pressing ORDER NOW!
 if (isset($_POST['submit'])) {
 
     $email = $_SESSION['email'] = $_POST['email'];
@@ -73,8 +90,8 @@ if (isset($_POST['submit'])) {
     } else {
         foreach ($_POST['products'] as $i => $product) {
             $orderMessage = "<div class='alert alert-info' role='alert'>You ordered:";
-            $orderedProducts[$i] = $products[$i]['name'];
-            $orderTotal += ($products[$i]['price']);
+            $orderedProducts[$i] = $cocktailsAlcohol[$i]['name'];
+            $orderTotal += ($cocktailsAlcohol[$i]['price']);
             $totalMessage = "for a total price of &euro;" . $orderTotal . " in drinks.</div>";
         }
     }
@@ -133,6 +150,12 @@ if (isset($_POST['submit'])) {
         
         </div>";
     }
+}
+
+// Reset session data
+if (isset($_POST['reset'])) {
+    session_destroy();
+    session_unset();
 }
 
 
