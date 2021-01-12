@@ -28,7 +28,7 @@ function whatIsHappening()
     var_dump($_SESSION);
 }
 
-whatIsHappening();
+// whatIsHappening();
 // if loop to get global variable for total value (if a cookie is set or not)
 if (isset($_COOKIE['valueOrders'])) {
     $totalValue = $_COOKIE['valueOrders'];
@@ -92,7 +92,7 @@ if (isset($_POST['submit'])) {
             $orderMessage = "<div class='alert alert-info' role='alert'>You ordered:";
             $orderedProducts[$i] = $cocktailsAlcohol[$i]['name'];
             $orderTotal += ($cocktailsAlcohol[$i]['price']);
-            $totalMessage = "for a total price of &euro;" . $orderTotal . " in drinks.</div>";
+            $totalMessage = count($orderedProducts) . " items for a total price of &euro;" . $orderTotal . " in drinks.</div>";
         }
     }
 
