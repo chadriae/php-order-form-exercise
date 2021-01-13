@@ -35,13 +35,30 @@ function whatIsHappening()
 
 
 $product1 = new Product();
-$product1->setNewProduct("Testing", 2.5);
+$product1->setNewProduct("Jack Rose", 18.5);
+
+$product2 = new Product();
+$product2->setNewProduct("Horse's neck", 20.5);
+
+$product3 = new Product();
+$product3->setNewProduct("Chicago cocktail", 17.5);
+
+$product4 = new Product();
+$product4->setNewProduct("Savoy Affair", 23.5);
+
+$product5 = new Product();
+$product5->setNewProduct("Panama", 19.5);
+
 
 $products = [
-    $product1
+    $product1,
+    $product2,
+    $product3,
+    $product4,
+    $product5
 ];
 
-var_dump($products[0]->price);
+var_dump($products[4]->price);
 
 
 // if loop to get global variable for total value (if a cookie is set or not)

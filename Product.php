@@ -7,8 +7,8 @@ class Product
 
     function setNewProduct($name, $price)
     {
-        $this->name = $name;
-        $this->price = $price;
+        $this->name     = $name;
+        $this->price    = $price;
     }
 
     function showAttributes()
