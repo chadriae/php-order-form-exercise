@@ -1,3 +1,4 @@
+//TODO fill in form with cookie variables <br>
 <?php
 // This file is your starting point (= since it's the index)
 // It will contain most of the logic, to prevent making a messy mix in the html
@@ -11,6 +12,8 @@
 // We are going to use session variables so we need to enable sessions
 session_start();
 session_set_cookie_params(0);
+
+require 'product.php';
 
 // Use this function when you need to need an overview of these variables
 function whatIsHappening()
@@ -29,6 +32,18 @@ function whatIsHappening()
 }
 
 // whatIsHappening();
+
+
+$product1 = new Product();
+$product1->setNewProduct("Testing", 2.5);
+
+$products = [
+    $product1
+];
+
+var_dump($products[0]->price);
+
+
 // if loop to get global variable for total value (if a cookie is set or not)
 if (isset($_COOKIE['valueOrders'])) {
     $totalValue = $_COOKIE['valueOrders'];

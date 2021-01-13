@@ -35,7 +35,7 @@
     <div class="container bg-light">
         <h1>COCKTAILS AT HOME</h1>
         <p>We've been in lockdown for so long now, we might forget how it feels and tastes to drink a qualitative cocktail, made by your favorite bartender. Order online and get a cocktail package delivered at your home. You don't need anything, we will provide everything! All you have to do is follow the instructions and enjoy!</p>
-        <?php // Navigation for when you need it 
+        <?php
         ?>
         <nav>
             <ul class="nav">
@@ -52,7 +52,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="email">E-mail:</label>
-                    <input type="text" id="email" name="email" class="form-control" />
+                    <input type="text" id="email" name="email" class="form-control" value="<?php $_POST['email'] ?>" />
                 </div>
                 <div></div>
             </div>
