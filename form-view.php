@@ -23,7 +23,7 @@
 
     body {
         font-family: 'Cairo', sans-serif;
-        background-image: url('images/background.jpeg');
+        /* background-image: url('images/background.jpeg'); */
         margin: 10px;
         padding: 5px;
         opacity: 0.9;
@@ -44,6 +44,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="?alcohol=0">Order non-alcoholic Drinks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?alcohol=6">Order beer</a>
                 </li>
             </ul>
         </nav>

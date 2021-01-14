@@ -50,7 +50,7 @@ $product5 = new Product();
 $product5->setNewProduct("Panama", 19.5);
 
 
-$products = [
+$alcoholicDrinks = [
     $product1,
     $product2,
     $product3,
@@ -58,7 +58,52 @@ $products = [
     $product5
 ];
 
-var_dump($products[4]->price);
+$nonproduct1 = new Product();
+$nonproduct1->setNewProduct("Virgin Margarita", 8.5);
+
+$nonproduct2 = new Product();
+$nonproduct2->setNewProduct("Virgin Cosomopolitan", 10.5);
+
+$nonproduct3 = new Product();
+$nonproduct3->setNewProduct("Virgin Martini dry", 7.5);
+
+$nonproduct4 = new Product();
+$nonproduct4->setNewProduct("Virgin Gin & Tonic", 13.5);
+
+$nonproduct5 = new Product();
+$nonproduct5->setNewProduct("Virgin Cuba Libre", 9.5);
+
+$nonAlcoholicDrinks = [
+    $nonproduct1,
+    $nonproduct2,
+    $nonproduct3,
+    $nonproduct4,
+    $nonproduct5
+];
+
+$beer1 = new Product();
+$beer1->setNewProduct("New England IPA", 3.5);
+
+$beer2 = new Product();
+$beer2->setNewProduct("Duvel Citra Hop", 3.5);
+
+$beer3 = new Product();
+$beer3->setNewProduct("Stout", 4.5);
+
+$beer4 = new Product();
+$beer4->setNewProduct("Tripel", 3.5);
+
+$beer5 = new Product();
+$beer5->setNewProduct("Pils", 2.5);
+
+$beers = [
+    $beer1,
+    $beer2,
+    $beer3,
+    $beer4,
+    $beer5
+];
+
 
 
 // if loop to get global variable for total value (if a cookie is set or not)
@@ -84,24 +129,14 @@ if ($_SESSION) {
     $zipcode = "";
 }
 
+// check which category is chosen
 if (empty($_GET) || $_GET['alcohol'] == 1) {
-    $cocktailsAlcohol = [
-        ['name' => 'Margarita', 'price' => 8.5],
-        ['name' => 'Cosmopolitan', 'price' => 10.5],
-        ['name' => 'Martini dry', 'price' => 7.5],
-        ['name' => 'Gin & Tonic', 'price' => 13.5],
-        ['name' => 'Cuba Libre', 'price' => 9.5],
-    ];
-} else {
-    $cocktailsAlcohol = [
-        ['name' => 'Virgin Margarita', 'price' => 8.5],
-        ['name' => 'Virgin Cosmopolitan', 'price' => 10.5],
-        ['name' => 'Virgin Martini dry', 'price' => 7.5],
-        ['name' => 'Virgin Gin & Tonic', 'price' => 13.5],
-        ['name' => 'Virgin Cuba Libre', 'price' => 9.5],
-    ];
+    $products = $alcoholicDrinks;
+} elseif (empty($_GET) || $_GET['alcohol'] == 0) {
+    $products = $nonAlcoholicDrinks;
+} elseif (empty($_GET) || $_GET['alcohol'] == 6) {
+    $products = $beers;
 }
-
 
 
 
@@ -122,12 +157,11 @@ if (isset($_POST['submit'])) {
     } else {
         foreach ($_POST['products'] as $i => $product) {
             $orderMessage = "<div class='alert alert-info' role='alert'>You ordered:";
-            $orderedProducts[$i] = $cocktailsAlcohol[$i]['name'];
-            $orderTotal += ($cocktailsAlcohol[$i]['price']);
+            $orderedProducts[$i] = $products[$i]->name;
+            $orderTotal += ($products[$i]->price);
             $totalMessage = count($orderedProducts) . " items for a total price of &euro;" . $orderTotal . " in drinks.</div>";
         }
     }
-
 
     if (empty($_POST["email"]) || empty($_POST['street']) || empty($_POST['streetnumber']) || empty($_POST['city']) || empty($_POST['zipcode'])) {
 
@@ -171,7 +205,6 @@ if (isset($_POST['submit'])) {
             setcookie('valueOrders', strval($totalValue), time() + (86400 * 365), "/");
         }
 
-
         $confirmationMessage =
             "<div class='alert alert-success' role='alert'>
         Thank you for your order! Your 
@@ -191,10 +224,10 @@ if (isset($_POST['reset'])) {
 }
 
 
-function orderedItems($ordered)
+function orderedItems($var)
 {
     echo "<ul>";
-    echo "<li>" . $ordered . "</li>";
+    echo "<li>" . $var . "</li>";
     echo "</ul>";
 }
 
